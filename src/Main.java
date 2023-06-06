@@ -1,102 +1,83 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Main extends JFrame {
-    private JLabel questionLabel;
-    private JRadioButton[] answerOptions;
-    private JButton submitButton;
-    private int currentQuestionIndex;
-    private int score;
-
-    // Вопросы и ответы для викторины
-    private String[] questions = {
-            "Какой город является столицей России?",
-            "Какой год был провозглашен годом космонавтики?",
-            "Сколько дней в феврале в високосном году?"
-    };
-
-    private String[][] choices = {
-            {"Москва", "Санкт-Петербург", "Казань", "Екатеринбург"},
-            {"1957", "1961", "1969", "1986"},
-            {"28", "29", "30", "31"}
-    };
-
-    private int[] correctAnswers = {0, 0, 1};
-
-    public Main() {
-        super("Викторина");
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-
-        JPanel questionPanel = new JPanel(new FlowLayout());
-        questionLabel = new JLabel(questions[0]);
-        questionPanel.add(questionLabel);
-
-        JPanel optionsPanel = new JPanel(new GridLayout(4, 1));
-        ButtonGroup buttonGroup = new ButtonGroup();
-        answerOptions = new JRadioButton[4];
-        for (int i = 0; i < answerOptions.length; i++) {
-            answerOptions[i] = new JRadioButton(choices[0][i]);
-            buttonGroup.add(answerOptions[i]);
-            optionsPanel.add(answerOptions[i]);
-        }
-
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        submitButton = new JButton("Ответить");
-        buttonPanel.add(submitButton);
-
-        add(questionPanel, BorderLayout.NORTH);
-        add(optionsPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkAnswer();
-                showNextQuestion();
-            }
-        });
-
-        pack();
-        setLocationRelativeTo(null);
+public class Main {
+    public static void main(String[] args) {
+        showWelcomeDialog();
     }
 
-    private void checkAnswer() {
-        if (answerOptions[correctAnswers[currentQuestionIndex]].isSelected()) {
-            score++;
-        }
-    }
-
-    private void showNextQuestion() {
-        currentQuestionIndex++;
-
-        if (currentQuestionIndex < questions.length) {
-            questionLabel.setText(questions[currentQuestionIndex]);
-
-            for (int i = 0; i < answerOptions.length; i++) {
-                answerOptions[i].setText(choices[currentQuestionIndex][i]);
-                answerOptions[i].setSelected(false);
-            }
+    private static void showWelcomeDialog() {
+        int option = JOptionPane.showConfirmDialog(null, "Добро пожаловать! Хотите зарегистрироваться в программе?",
+                "Регистрация", JOptionPane.YES_NO_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            showLoginDialog();
         } else {
-            showResult();
+            System.exit(0);
         }
     }
 
-    private void showResult() {
-        JOptionPane.showMessageDialog(this, "Вы завершили викторину.\nВаш результат: " + score + " из " + questions.length);
+    private static void showLoginDialog() {
+        String login = "";
+        while (login.length() <= 5 || login.contains(" ")) {
+            login = JOptionPane.showInputDialog(null, "Введите логин (длина должна быть больше 5 символов и не должен содержать пробелов):",
+                    "Логин", JOptionPane.PLAIN_MESSAGE);
+            if (login == null) {
+                System.exit(0);
+            }
+        }
+        showPasswordDialog();
+    }
+
+    private static void showPasswordDialog() {
+        String password = "";
+        while (!isValidPassword(password)) {
+            JPasswordField passwordField = new JPasswordField();
+            Object[] message = {"Введите пароль (длина должна быть больше 8 символов, не должен содержать пробелов, " +
+                    "должен содержать хотя бы одну цифру и хотя бы одну букву):", passwordField};
+            int option = JOptionPane.showConfirmDialog(null, message, "Пароль", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.CANCEL_OPTION) {
+                System.exit(0);
+            }
+            password = String.valueOf(passwordField.getPassword());
+        }
+        showConfirmPasswordDialog(password);
+    }
+
+    private static void showConfirmPasswordDialog(String password) {
+        String confirmPassword = "";
+        while (!password.equals(confirmPassword)) {
+            JPasswordField passwordField = new JPasswordField();
+            Object[] message = {"Повторите пароль:", passwordField};
+            int option = JOptionPane.showConfirmDialog(null, message, "Повтор пароля", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.CANCEL_OPTION) {
+                System.exit(0);
+            }
+            confirmPassword = String.valueOf(passwordField.getPassword());
+        }
+        showRegistrationSuccessDialog();
+    }
+
+    private static void showRegistrationSuccessDialog() {
+        JOptionPane.showMessageDialog(null, "Регистрация успешно завершена!", "Успешная регистрация",
+                JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Main quizApp = new Main();
-                quizApp.setVisible(true);
+    private static boolean isValidPassword(String password) {
+        if (password.length() < 8 || password.contains(" ")) {
+            return false;
+        }
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+        for (char ch : password.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                hasLetter = true;
+            } else if (Character.isDigit(ch)) {
+                hasDigit = true;
             }
-        });
+            if (hasLetter && hasDigit) {
+                return true;
+            }
+        }
+        return false;
     }
 }
