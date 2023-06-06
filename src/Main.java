@@ -1,47 +1,25 @@
 import javax.swing.*;
-import java.awt.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Main extends JDialog {
+public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+        JFrame frame = new JFrame("Input Dialog Example");
+        frame.setSize(300, 200);
+
+        JButton button = new JButton("Открыть диалоговое окно");
+        button.addActionListener(new ActionListener() {
             @Override
-            public void run() {
-                // Создаем окно
-                JFrame frame = new JFrame("Пример метки с изменяемым размером шрифта");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-
-                // Создаем метку
-                JLabel label = new JLabel("Моя первая надпись!");
-                label.setFont(new Font("Arial", Font.ITALIC, 50));
-
-                // Создаем слайдер для изменения размера шрифта
-                JSlider slider = new JSlider(JSlider.HORIZONTAL, 5, 100, 50);
-                slider.setMajorTickSpacing(10);
-                slider.setMinorTickSpacing(5);
-                slider.setPaintTicks(true);
-                slider.setPaintLabels(true);
-                slider.addChangeListener(new ChangeListener() {
-                    public void stateChanged(ChangeEvent e) {
-                        int fontSize = slider.getValue();
-                        label.setFont(label.getFont().deriveFont((float) fontSize));
-                    }
-                });
-
-                // Создаем панель для размещения метки и слайдера
-                JPanel panel = new JPanel(new BorderLayout());
-                panel.add(label, BorderLayout.CENTER);
-                panel.add(slider, BorderLayout.SOUTH);
-
-                // Добавляем панель в окно
-                frame.getContentPane().add(panel);
-
-                // Отображаем окно
-                frame.setLocationRelativeTo(null); // Размещаем окно по центру экрана
-                frame.setVisible(true);
+            public void actionPerformed(ActionEvent e) {
+                String name = JOptionPane.showInputDialog(frame, "Введите ваше имя:");
+                if (name != null && !name.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Ваше имя: " + name);
+                }
             }
         });
+
+        frame.getContentPane().add(button);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
