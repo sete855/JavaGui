@@ -1,32 +1,21 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
 
-
-public class Main extends JDialog {
+public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Создаем окно
-                JFrame frame = new JFrame("Пример метки");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
+        int firstAnswer = JOptionPane.showConfirmDialog(null, "Вы любите программирование?", "Вопрос 1", JOptionPane.YES_NO_OPTION);
+        int secondAnswer = JOptionPane.showConfirmDialog(null, "Вы готовы изучать новые технологии?", "Вопрос 2", JOptionPane.YES_NO_OPTION);
 
-                // Создаем метку
-                JLabel label = new JLabel("Моя первая надпись!");
-                label.setFont(new Font("Arial", Font.ITALIC, 50));
+        String result;
+        if (firstAnswer == JOptionPane.YES_OPTION && secondAnswer == JOptionPane.YES_OPTION) {
+            result = "Отлично, продолжайте развиваться!";
+        } else if (firstAnswer == JOptionPane.YES_OPTION && secondAnswer == JOptionPane.NO_OPTION) {
+            result = "Вы любите программирование, но не готовы изучать новые технологии.";
+        } else if (firstAnswer == JOptionPane.NO_OPTION && secondAnswer == JOptionPane.YES_OPTION) {
+            result = "Вы не любите программирование, но готовы изучать новые технологии.";
+        } else {
+            result = "Программирование и новые технологии не для вас.";
+        }
 
-                // Размещаем метку в центре окна
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setVerticalAlignment(SwingConstants.CENTER);
-
-                // Добавляем метку в окно
-                frame.getContentPane().add(label);
-
-                // Отображаем окно
-                frame.setLocationRelativeTo(null); // Размещаем окно по центру экрана
-                frame.setVisible(true);
-            }
-        });
+        JOptionPane.showMessageDialog(null, result, "Результат", JOptionPane.INFORMATION_MESSAGE);
     }
 }
