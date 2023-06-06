@@ -1,30 +1,32 @@
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
 
-public class Main {
+
+public class Main extends JDialog {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Key Listener Example");
-        frame.setSize(300, 200);
-
-        frame.addKeyListener(new KeyListener() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void keyTyped(KeyEvent e) {
-            }
+            public void run() {
+                // Создаем окно
+                JFrame frame = new JFrame("Пример метки");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(800, 600);
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    JOptionPane.showMessageDialog(frame, "Меня зовут по разному");
-                }
-            }
+                // Создаем метку
+                JLabel label = new JLabel("Моя первая надпись!");
+                label.setFont(new Font("Arial", Font.ITALIC, 50));
 
-            @Override
-            public void keyReleased(KeyEvent e) {
+                // Размещаем метку в центре окна
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setVerticalAlignment(SwingConstants.CENTER);
+
+                // Добавляем метку в окно
+                frame.getContentPane().add(label);
+
+                // Отображаем окно
+                frame.setLocationRelativeTo(null); // Размещаем окно по центру экрана
+                frame.setVisible(true);
             }
         });
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
 }
