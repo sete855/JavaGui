@@ -9,16 +9,25 @@ public class Main extends JDialog {
             @Override
             public void run() {
                 // Создаем окно
-                JFrame frame = new JFrame("Выбор количества книг");
+                JFrame frame = new JFrame("Выбор времени года");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(300, 200);
 
                 // Создаем надпись "Ответ"
                 JLabel answerLabel = new JLabel("Ответ:");
 
-                // Создаем элемент JSpinner для выбора количества книг
-                SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
-                JSpinner spinner = new JSpinner(spinnerModel);
+                // Создаем радиокнопки для выбора времени года
+                JRadioButton springRadioButton = new JRadioButton("Весна");
+                JRadioButton summerRadioButton = new JRadioButton("Лето");
+                JRadioButton autumnRadioButton = new JRadioButton("Осень");
+                JRadioButton winterRadioButton = new JRadioButton("Зима");
+
+                // Объединяем радиокнопки в одну группу
+                ButtonGroup seasonButtonGroup = new ButtonGroup();
+                seasonButtonGroup.add(springRadioButton);
+                seasonButtonGroup.add(summerRadioButton);
+                seasonButtonGroup.add(autumnRadioButton);
+                seasonButtonGroup.add(winterRadioButton);
 
                 // Создаем кнопку "Ответить"
                 JButton answerButton = new JButton("Ответить");
@@ -26,14 +35,28 @@ public class Main extends JDialog {
                 // Обработчик события нажатия на кнопку "Ответить"
                 answerButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        int bookCount = (int) spinner.getValue();
-                        answerLabel.setText("Ответ: " + bookCount);
+                        String selectedSeason;
+                        if (springRadioButton.isSelected()) {
+                            selectedSeason = "Весна";
+                        } else if (summerRadioButton.isSelected()) {
+                            selectedSeason = "Лето";
+                        } else if (autumnRadioButton.isSelected()) {
+                            selectedSeason = "Осень";
+                        } else if (winterRadioButton.isSelected()) {
+                            selectedSeason = "Зима";
+                        } else {
+                            selectedSeason = "Ничего не выбрано";
+                        }
+                        answerLabel.setText("Ответ: " + selectedSeason);
                     }
                 });
 
                 // Создаем панель для размещения элементов
                 JPanel panel = new JPanel();
-                panel.add(spinner);
+                panel.add(springRadioButton);
+                panel.add(summerRadioButton);
+                panel.add(autumnRadioButton);
+                panel.add(winterRadioButton);
                 panel.add(answerButton);
                 panel.add(answerLabel);
 
