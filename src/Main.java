@@ -9,36 +9,33 @@ public class Main extends JDialog {
             @Override
             public void run() {
                 // Создаем окно
-                JFrame frame = new JFrame("Запись строк");
+                JFrame frame = new JFrame("Выбор количества книг");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(300, 200);
 
-                // Создаем JTextArea и добавляем в JScrollPane
-                JTextArea textArea = new JTextArea(10, 20);
-                JScrollPane scrollPane = new JScrollPane(textArea);
+                // Создаем надпись "Ответ"
+                JLabel answerLabel = new JLabel("Ответ:");
 
-                // Создаем JTextField для ввода строки
-                JTextField textField = new JTextField(20);
+                // Создаем элемент JSpinner для выбора количества книг
+                SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
+                JSpinner spinner = new JSpinner(spinnerModel);
 
-                // Создаем кнопку "Записать"
-                JButton writeButton = new JButton("Записать");
+                // Создаем кнопку "Ответить"
+                JButton answerButton = new JButton("Ответить");
 
-                // Обработчик события нажатия на кнопку "Записать"
-                writeButton.addActionListener(new ActionListener() {
+                // Обработчик события нажатия на кнопку "Ответить"
+                answerButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        String text = textField.getText();
-                        if (!text.isEmpty()) {
-                            textArea.append(text + "\n");
-                            textField.setText("");
-                        }
+                        int bookCount = (int) spinner.getValue();
+                        answerLabel.setText("Ответ: " + bookCount);
                     }
                 });
 
                 // Создаем панель для размещения элементов
                 JPanel panel = new JPanel();
-                panel.add(textField);
-                panel.add(writeButton);
-                panel.add(scrollPane);
+                panel.add(spinner);
+                panel.add(answerButton);
+                panel.add(answerLabel);
 
                 // Добавляем панель в окно
                 frame.getContentPane().add(panel);
