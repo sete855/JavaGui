@@ -1,21 +1,46 @@
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Main {
+
+public class Main extends JDialog {
     public static void main(String[] args) {
-        int firstAnswer = JOptionPane.showConfirmDialog(null, "Вы любите программирование?", "Вопрос 1", JOptionPane.YES_NO_OPTION);
-        int secondAnswer = JOptionPane.showConfirmDialog(null, "Вы готовы изучать новые технологии?", "Вопрос 2", JOptionPane.YES_NO_OPTION);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // Создаем окно
+                JFrame frame = new JFrame("Кликер");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(300, 200);
 
-        String result;
-        if (firstAnswer == JOptionPane.YES_OPTION && secondAnswer == JOptionPane.YES_OPTION) {
-            result = "Отлично, продолжайте развиваться!";
-        } else if (firstAnswer == JOptionPane.YES_OPTION && secondAnswer == JOptionPane.NO_OPTION) {
-            result = "Вы любите программирование, но не готовы изучать новые технологии.";
-        } else if (firstAnswer == JOptionPane.NO_OPTION && secondAnswer == JOptionPane.YES_OPTION) {
-            result = "Вы не любите программирование, но готовы изучать новые технологии.";
-        } else {
-            result = "Программирование и новые технологии не для вас.";
-        }
+                // Создаем кнопку
+                JButton button = new JButton("Нажми меня!");
 
-        JOptionPane.showMessageDialog(null, result, "Результат", JOptionPane.INFORMATION_MESSAGE);
+                // Создаем надпись
+                JLabel label = new JLabel("Количество нажатий: 0");
+
+                // Обработчик события нажатия на кнопку
+                button.addActionListener(new ActionListener() {
+                    int count = 0;
+
+                    public void actionPerformed(ActionEvent e) {
+                        count++;
+                        label.setText("Количество нажатий: " + count);
+                    }
+                });
+
+                // Создаем панель для размещения кнопки и надписи
+                JPanel panel = new JPanel();
+                panel.add(button);
+                panel.add(label);
+
+                // Добавляем панель в окно
+                frame.getContentPane().add(panel);
+
+                // Отображаем окно
+                frame.setLocationRelativeTo(null); // Размещаем окно по центру экрана
+                frame.setVisible(true);
+            }
+        });
     }
 }
